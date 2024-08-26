@@ -4,7 +4,7 @@
 #DJC note: business as usual if the  watsonx.ai lite_install option is not provided or is provided and false
 - name: Insert watsonx.ai options into {{ status_dir }}/cp4d/{{ _p_current_cp4d_cluster.project }}-install-options.yml for full install
   blockinfile:
-    path: "{{ status_dir }}/cp4d/{{ _p_current_cp4d_cluster.project }}-install-options.yml"
+    path: "{{ status_dir }}/cp4d/{{ _p_current_cp4d_cluster.project }}-igit nstall-options.yml"
     marker: "# {mark} watsonx_ai options #"
     block: |2
         watsonx_ai:
