@@ -1,8 +1,24 @@
 ---
-- name: Insert watsonx.ai options into {{ status_dir }}/cp4d/{{ _p_current_cp4d_cluster.project }}-install-options.yml
+# DJC Note: Supports  a lite_install config option for watsonx.ai 
+
+#DJC note: business as usual if the  watsonx.ai lite_install option is not provided or is provided and false
+- name: Insert watsonx.ai options into {{ status_dir }}/cp4d/{{ _p_current_cp4d_cluster.project }}-install-options.yml for full install
   blockinfile:
     path: "{{ status_dir }}/cp4d/{{ _p_current_cp4d_cluster.project }}-install-options.yml"
     marker: "# {mark} watsonx_ai options #"
     block: |2
         watsonx_ai:
           tuning_disabled: {{ _current_cp4d_cartridge.installation_options.tuning_disabled | default(false) }}
+  when: _current_cp4d_cartridge.installation_options.lite_install is not defined or (_current_cp4d_cartridge.installation_options.lite_install is defined and not _current_cp4d_cartridge.installation_options.lite_install )
+
+#DJC note: if the  watsonx.ai lite_install option is  provided  AND set to true then add it to the install_options file
+# and force tuning_disabled to true
+- name: Insert watsonx.ai options into {{ status_dir }}/cp4d/{{ _p_current_cp4d_cluster.project }}-install-options.yml for lite install
+  blockinfile:
+    path: "{{ status_dir }}/cp4d/{{ _p_current_cp4d_cluster.project }}-install-options.yml"
+    marker: "# {mark} watsonx_ai options #"
+    block: |2
+        watsonx_ai:
+          tuning_disabled: true
+          lite_install: true
+  when: _current_cp4d_cartridge.installation_options.lite_install is defined and  _current_cp4d_cartridge.installation_options.lite_install 
